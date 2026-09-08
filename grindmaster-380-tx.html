@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css?v=3811074150">
 <script type="application/ld+json">{
  "@context":"https://schema.org","@type":"Product",
  "name":"HaulCrest Grindmaster 380 TX Stump Grinder",
@@ -95,12 +95,16 @@
     <div class="buyrow">
       <label class="qty"><span class="sr">Quantity</span>
         <input type="number" id="qty" value="1" min="1" max="5" inputmode="numeric"></label>
-      <button class="btn btn--primary btn--lg btn--grow" data-add="HC-GM380"
+      <button class="btn btn--primary btn--lg btn--grow" data-add="HC-GM380" data-buynow
         data-name="HaulCrest Grindmaster 380 TX Stump Grinder" data-price="3449"
         data-img="assets/img/grindmaster-380/01-hero.svg" data-url="grindmaster-380-tx.html" data-qty="#qty">
-        Add to basket &mdash; &pound;3,449</button>
+        Buy now &mdash; &pound;3,449</button>
     </div>
+    <button class="btn btn--ghost btn--lg btn--block" style="margin-top:.7rem" data-add="HC-GM380"
+      data-name="HaulCrest Grindmaster 380 TX Stump Grinder" data-price="3449"
+      data-img="assets/img/grindmaster-380/01-hero.svg" data-url="grindmaster-380-tx.html" data-qty="#qty">Add to basket</button>
     <p class="added" data-added hidden>Added to your basket. <a href="cart.html">View basket</a></p>
+    <p class="buynote">Buy now takes you straight to checkout with this machine in your basket.</p>
 
     <ul class="delivery-summary">
       <li><strong>Delivery:</strong> free to UK mainland, 3&ndash;7 working days.
@@ -200,8 +204,12 @@
 
 <div class="stickybuy">
   <div><b>&pound;3,449</b> <span class="muted" style="font-size:.8rem">inc. VAT</span></div>
-  <button class="btn btn--primary" data-add="HC-GM380" data-name="HaulCrest Grindmaster 380 TX Stump Grinder"
-    data-price="3449" data-img="assets/img/grindmaster-380/01-hero.svg" data-url="grindmaster-380-tx.html">Add to basket</button>
+  <div class="stickybuy__btns">
+    <button class="btn btn--ghost" data-add="HC-GM380" data-name="HaulCrest Grindmaster 380 TX Stump Grinder"
+      data-price="3449" data-img="assets/img/grindmaster-380/01-hero.svg" data-url="grindmaster-380-tx.html">Basket</button>
+    <button class="btn btn--primary" data-add="HC-GM380" data-buynow data-name="HaulCrest Grindmaster 380 TX Stump Grinder"
+      data-price="3449" data-img="assets/img/grindmaster-380/01-hero.svg" data-url="grindmaster-380-tx.html">Buy now</button>
+  </div>
 </div>
 </main>
 <footer class="footer">
@@ -239,6 +247,6 @@
     </div>
   </div>
 </footer>
-<script src="assets/js/script.js"></script>
+<script src="assets/js/script.js?v=24b90077e9"></script>
 </body>
 </html>

@@ -64,6 +64,7 @@
       });
     }
     write(items);
+    if (btn.hasAttribute('data-buynow')) { window.location.href = 'checkout.html'; return; }
     var note = document.querySelector('[data-added]');
     if (note) { note.hidden = false; }
     btn.classList.add('is-added');
