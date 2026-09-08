@@ -5,10 +5,12 @@ step, no dependencies, no framework.
 
 | Product | Price (inc. VAT) |
 |---|---|
-| Cyclone 150 TD Wood Chipper | £2,899 |
-| Grindmaster 380 TX Stump Grinder | £3,449 |
-| Titan 1000 HT Tracked Dumper | £2,699 |
-| Vanguard 850 SL Compact Loader | £3,299 |
+| HC15H Towable Wood Chipper | £2,899 |
+| CREX10-K Mini Excavator | £3,449 |
+| MD-500HPRO Tracked Mini Dumper | £2,699 |
+| Mini Skid Steer Loader | £3,299 |
+
+All four carry real photography, ten views each.
 
 ## Structure
 
