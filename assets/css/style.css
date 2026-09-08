@@ -345,3 +345,13 @@ legend{padding:0 .5rem;font-weight:800;font-size:.86rem;letter-spacing:.08em;tex
 .adminlinks a{color:var(--brand);text-decoration:underline}
 #panel h2{margin-top:2rem;font-size:1.5rem}
 #panel code{background:var(--bg-3);padding:.1rem .4rem;border-radius:4px;font-size:.88em}
+
+/* payment marks */
+.payico{display:inline-flex;line-height:0}
+.payico svg{width:44px;height:28px;border-radius:5px;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+.footer__pay{gap:.45rem}
+.footer__pay .muted{margin-right:.35rem}
+/* business identity: each supplied field on its own line, blanks collapse away */
+/* scoped to the address block: the copyright line uses [data-biz] inline */
+.footer__grid [data-biz],.footer__grid [data-biz-line]{display:block}
+[data-biz][hidden]{display:none!important}

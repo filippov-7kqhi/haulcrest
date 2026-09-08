@@ -21,7 +21,6 @@
     <g:google_product_category>5605</g:google_product_category>
     <g:shipping><g:country>GB</g:country><g:service>Standard</g:service><g:price>0.00 GBP</g:price></g:shipping>
     <g:shipping_weight> kg</g:shipping_weight>
-    <g:tax><g:country>GB</g:country><g:rate>20</g:rate><g:tax_ship>n</g:tax_ship></g:tax>
   </item>
   <item>
     <g:id>HC-CREX10K</g:id>
@@ -40,7 +39,6 @@
     <g:google_product_category>5605</g:google_product_category>
     <g:shipping><g:country>GB</g:country><g:service>Standard</g:service><g:price>0.00 GBP</g:price></g:shipping>
     <g:shipping_weight> kg</g:shipping_weight>
-    <g:tax><g:country>GB</g:country><g:rate>20</g:rate><g:tax_ship>n</g:tax_ship></g:tax>
   </item>
   <item>
     <g:id>HC-MD500</g:id>
@@ -59,7 +57,6 @@
     <g:google_product_category>5605</g:google_product_category>
     <g:shipping><g:country>GB</g:country><g:service>Standard</g:service><g:price>0.00 GBP</g:price></g:shipping>
     <g:shipping_weight> kg</g:shipping_weight>
-    <g:tax><g:country>GB</g:country><g:rate>20</g:rate><g:tax_ship>n</g:tax_ship></g:tax>
   </item>
   <item>
     <g:id>HC-MSS739</g:id>
@@ -78,7 +75,6 @@
     <g:google_product_category>5605</g:google_product_category>
     <g:shipping><g:country>GB</g:country><g:service>Standard</g:service><g:price>0.00 GBP</g:price></g:shipping>
     <g:shipping_weight> kg</g:shipping_weight>
-    <g:tax><g:country>GB</g:country><g:rate>20</g:rate><g:tax_ship>n</g:tax_ship></g:tax>
   </item>
 </channel>
 </rss>

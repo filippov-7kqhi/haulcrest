@@ -62,7 +62,6 @@
   }
 
   var KEY = 'basket.v1';
-  var VAT = 0.20;
 
   function money(n) {
     return '£' + n.toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
@@ -88,8 +87,7 @@
 
   function totals(items) {
     var gross = items.reduce(function (t, i) { return t + i.price * i.qty; }, 0);
-    var net = Math.round(gross / (1 + VAT));
-    return { gross: gross, net: net, vat: gross - net };
+    return { gross: gross, net: gross };
   }
 
   function paintTotals(items) {
@@ -98,7 +96,6 @@
       document.querySelectorAll(sel).forEach(function (el) { el.textContent = money(v); });
     };
     set('[data-sum-net]', t.net);
-    set('[data-sum-vat]', t.vat);
     set('[data-sum-total]', t.gross);
   }
 
@@ -216,7 +213,7 @@
         return '<div class="cartitem" data-sku="' + i.sku + '">' +
           '<a href="' + i.url + '"><img src="' + i.img + '" width="1200" height="760" alt=""></a>' +
           '<div><h3><a href="' + i.url + '">' + i.name + '</a></h3>' +
-          '<p class="line">Item code ' + i.sku + ' &middot; ' + money(i.price) + ' each, inc. VAT</p>' +
+          '<p class="line">' + money(i.price) + ' each</p>' +
           '<label class="line">Qty <input type="number" min="1" max="5" value="' + i.qty +
           '" data-qty-for="' + i.sku + '"></label></div>' +
           '<div class="cartitem__right"><b>' + money(i.price * i.qty) + '</b>' +
@@ -383,10 +380,15 @@
   (function () {
     var biz = cfg().business || {};
     document.querySelectorAll('[data-biz]').forEach(function (el) {
-      var v = (biz[el.dataset.biz] || '').trim();
-      if (!v) return;                       // keep the placeholder until it is filled in
-      el.textContent = v;
-      if (el.tagName === 'A' && el.getAttribute('href') === '') {
+      var v = (biz[el.dataset.biz] || '').trim() || el.textContent.trim();
+      if (!v) {
+        // Nothing supplied for this field, so show nothing rather than an empty line.
+        if (el.hasAttribute('data-hide-if-unset')) el.hidden = true;
+        return;
+      }
+      el.textContent = (el.dataset.prefix || '') + v;
+      el.hidden = false;
+      if (el.tagName === 'A' && !el.getAttribute('href')) {
         el.setAttribute('href', 'tel:' + v.replace(/[^+0-9]/g, ''));
       }
     });
