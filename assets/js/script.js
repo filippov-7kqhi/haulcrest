@@ -43,6 +43,27 @@
     set('[data-sum-total]', t.gross);
   }
 
+  // ---- Stripe --------------------------------------------------------------
+  function cfg() { return window.STRIPE_CONFIG || {}; }
+
+  function linkFor(sku) {
+    var links = cfg().paymentLinks || {};
+    return (links[sku] || '').trim();
+  }
+
+  /** A basket is payable by Payment Link only when it holds one distinct machine. */
+  function singleLine(items) {
+    return items.length === 1 ? items[0] : null;
+  }
+
+  function goToPaymentLink(url, item) {
+    var u = url;
+    // Stripe reads these from the query string on a Payment Link.
+    u += (u.indexOf('?') === -1 ? '?' : '&') +
+         'client_reference_id=' + encodeURIComponent(item.sku);
+    window.location.href = u;
+  }
+
   // ---- add to basket -------------------------------------------------------
   document.addEventListener('click', function (ev) {
     var btn = ev.target.closest('[data-add]');
@@ -64,7 +85,15 @@
       });
     }
     write(items);
-    if (btn.hasAttribute('data-buynow')) { window.location.href = 'checkout.html'; return; }
+    if (btn.hasAttribute('data-buynow')) {
+      var direct = linkFor(btn.dataset.add);
+      if (direct) {
+        goToPaymentLink(direct, { sku: btn.dataset.add });
+      } else {
+        window.location.href = 'checkout.html';
+      }
+      return;
+    }
     var note = document.querySelector('[data-added]');
     if (note) { note.hidden = false; }
     btn.classList.add('is-added');
@@ -123,25 +152,74 @@
   }
 
   // ---- checkout page -------------------------------------------------------
-  var ck = document.getElementById('checkoutForm');
-  if (ck) {
+  var payReady = document.getElementById('payReady');
+  if (payReady) {
     var items = read();
     if (!items.length) { window.location.replace('cart.html'); return; }
+
     document.getElementById('checkoutItems').innerHTML = items.map(function (i) {
       return '<div><span>' + i.name + ' &times; ' + i.qty + '</span><span>' +
              money(i.price * i.qty) + '</span></div>';
     }).join('');
     paintTotals(items);
-    ck.addEventListener('submit', function (ev) {
-      ev.preventDefault();
-      if (!ck.reportValidity()) return;
-      var box = document.getElementById('ckResult');
-      box.className = 'result show';
-      box.innerHTML = '<strong>Payment is not connected yet.</strong> This store has no payment ' +
-        'provider configured, so no order was placed and no money has been taken. ' +
-        'See the deployment notes for how to connect one.';
-      box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
+
+    var box = document.getElementById('ckResult');
+    var say = function (html) { box.className = 'result show'; box.innerHTML = html; };
+
+    var endpoint = (cfg().checkoutEndpoint || '').trim();
+    var only = singleLine(items);
+    var link = only ? linkFor(only.sku) : '';
+
+    if (endpoint) {
+      // Any basket, including several different machines.
+      payReady.hidden = false;
+      document.getElementById('payBtn').addEventListener('click', function (ev) {
+        var b = ev.currentTarget;
+        b.disabled = true;
+        b.textContent = 'Contacting Stripe…';
+        fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: items.map(function (i) { return { sku: i.sku, qty: i.qty }; })
+          })
+        }).then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        }).then(function (d) {
+          if (!d.url) throw new Error('no session url');
+          window.location.href = d.url;
+        }).catch(function (err) {
+          b.disabled = false;
+          b.textContent = 'Pay securely with Stripe';
+          say('<strong>We could not start the payment.</strong> Nothing has been charged. ' +
+              'Please try again, or email us and we will take the order directly. ' +
+              '<span class="muted">(' + err.message + ')</span>');
+        });
+      });
+
+    } else if (only && link) {
+      // Single machine, paid through its Stripe Payment Link.
+      payReady.hidden = false;
+      document.getElementById('payBtn').addEventListener('click', function () {
+        goToPaymentLink(link, only);
+      });
+      if (only.qty > 1) {
+        say('You have ' + only.qty + ' of this machine in your basket. Set the quantity to ' +
+            only.qty + ' on the Stripe page before paying.');
+      }
+
+    } else if (items.length > 1) {
+      say('<strong>One machine at a time.</strong> Card payment currently handles a single ' +
+          'machine per order. Remove all but one from your <a href="cart.html">basket</a> and pay, ' +
+          'then repeat for the next &mdash; or <a href="contact.html">contact us</a> and we will ' +
+          'raise one invoice for the lot.');
+
+    } else {
+      say('<strong>Card payment is not switched on yet.</strong> No order has been placed and no ' +
+          'money has been taken. <a href="contact.html">Send us an enquiry</a> and we will take ' +
+          'the order directly.');
+    }
   }
 
   // ---- mobile nav ----------------------------------------------------------

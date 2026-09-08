@@ -22,25 +22,21 @@ assets/img/      32 product images (8 views x 4 machines)
 CNAME  sitemap.xml  robots.txt
 ```
 
-## Before you can trade or submit to Google Merchant Center
+## Before you can trade
 
-Two things are deliberately unfinished, because only you can supply them.
+**Business identity.** Every page footer shows bracketed placeholders — company name,
+Companies House number, VAT number, registered address, phone. Google and Stripe both
+verify these against public records. Replace them in the store config and rebuild;
+publishing invented details is misrepresentation.
 
-**1. Business identity.** Every page footer currently shows bracketed placeholders:
+**Stripe.** Payment runs on Stripe Payment Links, which is the supported route for a
+static site with no server. Paste one link per machine into
+`assets/js/stripe-config.js` — see `stripe/README.md` for the 15-minute setup. Until a
+link is pasted in, checkout says plainly that payment is not switched on and routes to
+an enquiry, rather than pretending to take money.
 
-- `[Registered company name] Ltd`
-- `[Companies House number]`
-- `[VAT registration number]`
-- `[Registered address]`, `[Town]`, `[Postcode]`
-- `[Add your phone number]`
-
-Merchant Center verifies these against public records. Replace them with your real
-details before going live — publishing invented ones is misrepresentation.
-
-**2. Payment.** Checkout collects the order and then stops, saying plainly that no
-payment provider is connected and no money has been taken. Connect Stripe Checkout,
-PayPal or similar in `assets/js/script.js` (the `checkoutForm` submit handler).
-Merchant Center requires a checkout a buyer can actually complete.
+Never commit a Stripe secret key (`sk_live_…`). Payment Link URLs are public by design;
+secret keys are not.
 
 ## What is already in place for Merchant Center
 

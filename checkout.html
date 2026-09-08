@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Checkout — HaulCrest</title>
-<meta name="description" content="Secure checkout.">
+<meta name="description" content="Secure checkout, powered by Stripe.">
 <link rel="canonical" href="https://haulcrest.shop/checkout.html">
 <meta name="robots" content="noindex,nofollow">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="HaulCrest">
 <meta property="og:title" content="Checkout — HaulCrest">
-<meta property="og:description" content="Secure checkout.">
+<meta property="og:description" content="Secure checkout, powered by Stripe.">
 <meta property="og:url" content="https://haulcrest.shop/checkout.html">
 <meta property="og:image" content="https://haulcrest.shop/assets/img/cyclone-150/01-hero.svg">
 <meta property="og:locale" content="en_GB">
@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=3811074150">
+<link rel="stylesheet" href="assets/css/style.css?v=266f8adac3">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -40,58 +40,50 @@
 <section class="pagehead"><div class="wrap">
   <nav class="crumbs"><a href="index.html">Home</a> / <a href="cart.html">Basket</a> / <span>Checkout</span></nav>
   <h1>Checkout</h1>
-  <p class="muted">Step 1 of 2 &mdash; your details. Payment is taken on the next step by our
-     payment provider; card details are never entered on or stored by this site.</p>
+  <p class="muted" style="max-width:64ch">Payment is handled by Stripe. You will enter your delivery
+     address, contact details and card on Stripe's secure page &mdash; no card details are entered on
+     or stored by this website.</p>
 </div></section>
 <section><div class="wrap cartlayout">
-  <form class="form" id="checkoutForm" novalidate>
-    <fieldset><legend>Contact</legend>
-      <div class="field"><label for="ck-email">Email</label>
-        <input id="ck-email" name="email" type="email" autocomplete="email" required></div>
-      <div class="field"><label for="ck-phone">Phone (the carrier calls to book delivery)</label>
-        <input id="ck-phone" name="phone" type="tel" autocomplete="tel" required></div>
-    </fieldset>
-    <fieldset><legend>Delivery address</legend>
-      <div class="field"><label for="ck-name">Full name</label>
-        <input id="ck-name" name="name" autocomplete="name" required></div>
-      <div class="field"><label for="ck-addr">Address</label>
-        <input id="ck-addr" name="address" autocomplete="street-address" required></div>
-      <div class="field2">
-        <div class="field"><label for="ck-city">Town or city</label>
-          <input id="ck-city" name="city" autocomplete="address-level2" required></div>
-        <div class="field"><label for="ck-pc">Postcode</label>
-          <input id="ck-pc" name="postcode" autocomplete="postal-code" required></div>
+  <div>
+    <div class="checkout-panel">
+      <h2>Your order</h2>
+      <div id="checkoutItems" class="checkitems"></div>
+      <div id="payReady" hidden>
+        <button class="btn btn--primary btn--lg btn--block" id="payBtn">
+          Pay securely with Stripe</button>
+        <p class="formnote" style="margin-top:.9rem">You will be taken to Stripe to complete payment.
+          Your order is not placed until payment succeeds. Stripe collects your delivery address there.</p>
       </div>
-      <div class="field"><label for="ck-notes">Access notes (gradient, gate width, parking)</label>
-        <textarea id="ck-notes" name="notes" rows="3"></textarea></div>
-    </fieldset>
-    <fieldset><legend>Confirm</legend>
-      <label class="check"><input type="checkbox" id="ck-terms" required>
-        I have read and accept the <a href="terms.html">terms &amp; conditions</a>,
-        <a href="returns.html">returns policy</a> and <a href="privacy.html">privacy policy</a>.</label>
-    </fieldset>
-    <button class="btn btn--primary btn--lg btn--block" type="submit">Continue to payment</button>
-    <p class="formnote">You will be taken to our payment provider to pay by card, PayPal or Apple Pay.
-      Your order is not placed until payment completes.</p>
-  </form>
+      <div class="result" id="ckResult" role="status"></div>
+      <ul class="paylist">
+        <li>Card, Apple&nbsp;Pay and Google&nbsp;Pay accepted</li>
+        <li>Payment taken in full at checkout &mdash; no deposits, no recurring charges</li>
+        <li>A VAT invoice is emailed with your dispatch confirmation</li>
+      </ul>
+    </div>
+    <p class="formnote">Questions before you pay? Email
+      <a href="mailto:sales@haulcrest.shop">sales@haulcrest.shop</a> or call
+      <a href="tel:">[Add your phone number]</a>.</p>
+  </div>
   <aside class="summary">
     <h2>Order summary</h2>
-    <div id="checkoutItems" class="checkitems"></div>
     <dl>
       <div><dt>Subtotal (ex. VAT)</dt><dd data-sum-net>&pound;0</dd></div>
       <div><dt>VAT at 20%</dt><dd data-sum-vat>&pound;0</dd></div>
-      <div><dt>Delivery</dt><dd>Free (UK mainland)</dd></div>
+      <div><dt>Delivery (UK mainland)</dt><dd>Free</dd></div>
       <div class="total"><dt>Total to pay</dt><dd data-sum-total>&pound;0</dd></div>
     </dl>
+    <a class="btn btn--ghost btn--block" href="cart.html">Back to basket</a>
     <ul class="minipolicy">
       <li><a href="returns.html">30-day returns</a></li>
       <li><a href="shipping.html">Delivery &amp; shipping</a></li>
       <li><a href="payment.html">Payment &amp; billing</a></li>
+      <li><a href="terms.html">Terms</a></li>
       <li><a href="privacy.html">Privacy</a></li>
     </ul>
   </aside>
-</div></section>
-<div class="result" id="ckResult" role="status"></div></main>
+</div></section></main>
 <footer class="footer">
   <div class="wrap">
     <div class="footer__grid">
@@ -127,6 +119,7 @@
     </div>
   </div>
 </footer>
-<script src="assets/js/script.js?v=24b90077e9"></script>
+<script src="assets/js/stripe-config.js?v=3f369e32be"></script>
+<script src="assets/js/script.js?v=47a6303d33"></script>
 </body>
 </html>
