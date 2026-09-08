@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — HaulCrest</title>
+<meta name="description" content="Store configuration.">
+<link rel="canonical" href="https://haulcrest.shop/admin.html">
+<meta name="robots" content="noindex,nofollow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="HaulCrest">
+<meta property="og:title" content="Admin — HaulCrest">
+<meta property="og:description" content="Store configuration.">
+<meta property="og:url" content="https://haulcrest.shop/admin.html">
+<meta property="og:image" content="https://haulcrest.shop/assets/img/cyclone-150/01-hero.svg">
+<meta property="og:locale" content="en_GB">
+<meta name="theme-color" content="#0c0e12">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2327354a'/%3E%3Cpath d='M5 20 L11 9h10l6 11z' fill='none' stroke='%23f59e0b' stroke-width='2.2' stroke-linejoin='round'/%3E%3Cpath d='M4 24h24' stroke='%23f59e0b' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css?v=5b346b120e">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="topbar"><div class="wrap topbar__in"><span>&#128666; Free UK mainland delivery</span><span>&#8634; 30-day returns</span><span>&#128737; 2-year warranty</span><span>&#9993; sales@haulcrest.shop</span></div></div>
+<header class="header">
+  <div class="wrap header__in">
+    <a class="logo" href="index.html"><svg class="logo__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 21 L10 9 h12 l6 12 z" fill="#27354a" stroke="#f59e0b" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 24 h26" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round"/><circle cx="10" cy="27" r="2.4" fill="#f59e0b"/><circle cx="22" cy="27" r="2.4" fill="#f59e0b"/></svg><span>Haul<b>Crest</b></span></a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="machines.html">Machines</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="track-order.html">Track Order</a>
+      <a class="btn btn--primary nav__cart" href="cart.html">Basket <span data-cart-count>0</span></a></nav>
+    <div class="header__right">
+      <a class="cartlink" href="cart.html" aria-label="Basket">&#128722;<span class="cartbadge" data-cart-count>0</span></a>
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+<section class="pagehead"><div class="wrap" style="max-width:860px">
+  <h1>Store admin</h1>
+  <div class="warnbox">
+    <strong>Read this once.</strong> This page is a <em>configuration editor</em>, not a
+    control panel. It cannot change the live site on its own: it produces a file that you
+    commit to GitHub, and your GitHub login is what actually authorises the change.
+    <br><br>
+    The passphrase below only hides the form from a casual visitor. This is a static site,
+    so the check runs in your browser and anyone can read it or skip it. Nothing on this
+    page is confidential &mdash; Payment Links, business details and prices are all public
+    anyway. <strong>Never put a Stripe secret key here or anywhere in the repository.</strong>
+  </div>
+</div></section>
+
+<section><div class="wrap" style="max-width:860px">
+  <form id="gate" class="form" style="max-width:420px">
+    <div class="field"><label for="pass">Passphrase</label>
+      <input id="pass" type="password" autocomplete="current-password"></div>
+    <button class="btn btn--primary btn--lg" type="submit">Unlock</button>
+    <p class="formnote" id="gateMsg"></p>
+  </form>
+
+  <div id="panel" hidden>
+    <h2>Stripe Payment Links</h2>
+    <p class="muted">One per machine. Create them in the Stripe Dashboard under
+      <em>Payment Links</em>, with shipping address collection and adjustable quantity
+      switched on, and tax behaviour set to <em>inclusive</em>. Leave one blank and that
+      machine routes to an enquiry instead.</p>
+    <form class="form">
+      <div class="field">
+        <label for="pl-HC-CY150">Cyclone 150 TD Wood Chipper <span class="muted">— &pound;2,899 · HC-CY150</span></label>
+        <input id="pl-HC-CY150" data-link="HC-CY150" type="url" placeholder="https://buy.stripe.com/…"
+               autocomplete="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="pl-HC-GM380">Grindmaster 380 TX Stump Grinder <span class="muted">— &pound;3,449 · HC-GM380</span></label>
+        <input id="pl-HC-GM380" data-link="HC-GM380" type="url" placeholder="https://buy.stripe.com/…"
+               autocomplete="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="pl-HC-TT1000">Titan 1000 HT Tracked Dumper <span class="muted">— &pound;2,699 · HC-TT1000</span></label>
+        <input id="pl-HC-TT1000" data-link="HC-TT1000" type="url" placeholder="https://buy.stripe.com/…"
+               autocomplete="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="pl-HC-VG850">Vanguard 850 SL Compact Loader <span class="muted">— &pound;3,299 · HC-VG850</span></label>
+        <input id="pl-HC-VG850" data-link="HC-VG850" type="url" placeholder="https://buy.stripe.com/…"
+               autocomplete="off" spellcheck="false">
+      </div></form>
+
+    <h2 style="margin-top:2.4rem">Business identity</h2>
+    <p class="muted">Shown in the footer of every page. Google Merchant Center and Stripe
+      both verify these against Companies House, so they must be your real details.</p>
+    <form class="form">
+      <div class="field"><label for="bz-company">Registered company name</label>
+        <input id="bz-company" data-biz-field="company" autocomplete="off" spellcheck="false"></div>
+      <div class="field"><label for="bz-companyNo">Companies House number</label>
+        <input id="bz-companyNo" data-biz-field="companyNo" autocomplete="off" spellcheck="false"></div>
+      <div class="field"><label for="bz-vatNo">VAT registration number</label>
+        <input id="bz-vatNo" data-biz-field="vatNo" autocomplete="off" spellcheck="false"></div>
+      <div class="field"><label for="bz-street">Registered address</label>
+        <input id="bz-street" data-biz-field="street" autocomplete="off" spellcheck="false"></div>
+      <div class="field"><label for="bz-city">Town or city</label>
+        <input id="bz-city" data-biz-field="city" autocomplete="off" spellcheck="false"></div>
+      <div class="field"><label for="bz-postcode">Postcode</label>
+        <input id="bz-postcode" data-biz-field="postcode" autocomplete="off" spellcheck="false"></div>
+      <div class="field"><label for="bz-phone">Phone number</label>
+        <input id="bz-phone" data-biz-field="phone" autocomplete="off" spellcheck="false"></div></form>
+
+    <h2 style="margin-top:2.4rem">Save your changes</h2>
+    <p class="muted">This produces the contents of <code>assets/js/site-config.js</code>.
+      Copy it, open that file on GitHub, replace everything, and commit. The site picks it
+      up on the next load — no rebuild needed.</p>
+    <div class="btnrow">
+      <button class="btn btn--primary btn--lg" id="copyBtn" type="button">Copy file contents</button>
+      <button class="btn btn--ghost btn--lg" id="dlBtn" type="button">Download file</button>
+    </div>
+    <p class="formnote" id="saveMsg"></p>
+    <textarea id="out" class="outbox" rows="18" readonly spellcheck="false"></textarea>
+
+    <h2 style="margin-top:2.4rem">Where everything else lives</h2>
+    <ul class="adminlinks">
+      <li><strong>Orders, refunds and payouts</strong> —
+        <a href="https://dashboard.stripe.com/payments" target="_blank" rel="noopener">Stripe Dashboard</a>.
+        A static site cannot hold order data; Stripe is your order admin.</li>
+      <li><strong>Product feed status</strong> —
+        <a href="https://merchants.google.com/" target="_blank" rel="noopener">Google Merchant Center</a>.</li>
+      <li><strong>Prices, specs, copy and images</strong> — these are built into the pages.
+        Ask for a change and it ships as a commit.</li>
+      <li><strong>Changing this passphrase</strong> — paste a new one below to get its hash,
+        then replace <code>admin.passHash</code> in the file above.</li>
+    </ul>
+    <form class="form" style="max-width:420px" id="hashForm">
+      <div class="field"><label for="newpass">New passphrase</label>
+        <input id="newpass" type="text" autocomplete="off" spellcheck="false"></div>
+      <button class="btn btn--ghost" type="submit">Show hash</button>
+      <p class="formnote" id="hashOut"></p>
+    </form>
+  </div>
+</div></section></main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <a class="logo" href="index.html"><svg class="logo__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 21 L10 9 h12 l6 12 z" fill="#27354a" stroke="#f59e0b" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 24 h26" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round"/><circle cx="10" cy="27" r="2.4" fill="#f59e0b"/><circle cx="22" cy="27" r="2.4" fill="#f59e0b"/></svg><span>Haul<b>Crest</b></span></a>
+        <p class="muted" style="margin-top:1rem;max-width:38ch;font-size:.93rem">UK supplier of tracked dumpers, compact loaders, chippers and stump grinders. Machines held in stock, spares held in stock, and capacities quoted to the standard.</p>
+        <p class="muted" style="font-size:.88rem;line-height:1.8">
+          <strong style="color:var(--ink)" data-biz="company">[Registered company name] Ltd</strong><br>
+          <span data-biz="street">[Registered address]</span><br>
+          <span data-biz="city">[Town]</span> <span data-biz="postcode">[Postcode]</span><br>
+          United Kingdom<br>
+          <a href="mailto:sales@haulcrest.shop">sales@haulcrest.shop</a><br>
+          <a href="tel:" data-biz="phone">[Add your phone number]</a><br>
+          <span class="muted">Company no. <span data-biz="companyNo">[Companies House number]</span>
+            &middot; VAT no. <span data-biz="vatNo">[VAT registration number]</span></span>
+        </p>
+      </div>
+      <div><h4>Machines</h4><ul><li><a href="cyclone-150-td.html">Cyclone 150 TD</a></li><li><a href="grindmaster-380-tx.html">Grindmaster 380 TX</a></li><li><a href="titan-1000-ht.html">Titan 1000 HT</a></li><li><a href="vanguard-850-sl.html">Vanguard 850 SL</a></li></ul></div>
+      <div><h4>Customer service</h4><ul>
+        <li><a href="contact.html">Contact us</a></li>
+        <li><a href="track-order.html">Track your order</a></li>
+        <li><a href="about.html">About us</a></li>
+        <li><a href="machines.html">All machines</a></li></ul></div>
+      <div><h4>Policies</h4><ul><li><a href="shipping.html">Delivery &amp; shipping</a></li><li><a href="returns.html">Returns &amp; refunds</a></li><li><a href="payment.html">Payment &amp; billing</a></li><li><a href="returns.html#warranty">Warranty</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms &amp; conditions</a></li></ul></div>
+    </div>
+    <div class="footer__pay">
+      <span class="muted">We accept</span>
+      <span class="paychip">VISA</span><span class="paychip">Mastercard</span>
+      <span class="paychip">AmEx</span><span class="paychip">PayPal</span>
+      <span class="paychip">Apple&nbsp;Pay</span>
+    </div>
+    <div class="footer__bot">
+      <span>&copy; <span data-year></span> <span data-biz="company">[Registered company name] Ltd</span>. All rights reserved.</span>
+      <span>All prices in GBP and include UK VAT at 20%. HaulCrest is an independent
+        supplier and is not affiliated with any equipment manufacturer.</span>
+    </div>
+  </div>
+</footer>
+<script src="assets/js/site-config.js?v=ae6d9858a0"></script>
+<script src="assets/js/script.js?v=17b110cfd1"></script>
+</body>
+</html>

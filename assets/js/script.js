@@ -44,7 +44,7 @@
   }
 
   // ---- Stripe --------------------------------------------------------------
-  function cfg() { return window.STRIPE_CONFIG || {}; }
+  function cfg() { return window.SITE_CONFIG || window.STRIPE_CONFIG || {}; }
 
   function linkFor(sku) {
     var links = cfg().paymentLinks || {};
@@ -276,6 +276,115 @@
       form.reset();
     });
   });
+
+
+  // ---- business identity from config --------------------------------------
+  (function () {
+    var biz = cfg().business || {};
+    document.querySelectorAll('[data-biz]').forEach(function (el) {
+      var v = (biz[el.dataset.biz] || '').trim();
+      if (!v) return;                       // keep the placeholder until it is filled in
+      el.textContent = v;
+      if (el.tagName === 'A' && el.getAttribute('href') === '') {
+        el.setAttribute('href', 'tel:' + v.replace(/[^+0-9]/g, ''));
+      }
+    });
+  })();
+
+  // ---- admin config editor -------------------------------------------------
+  var gate = document.getElementById('gate');
+  if (gate) {
+    var panel = document.getElementById('panel');
+    var out = document.getElementById('out');
+
+    var sha256 = function (text) {
+      return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text))
+        .then(function (buf) {
+          return [].map.call(new Uint8Array(buf), function (b) {
+            return b.toString(16).padStart(2, '0');
+          }).join('');
+        });
+    };
+
+    var linkInputs = function () { return document.querySelectorAll('[data-link]'); };
+    var bizInputs = function () { return document.querySelectorAll('[data-biz-field]'); };
+
+    var load = function () {
+      var c = cfg(), links = c.paymentLinks || {}, biz = c.business || {};
+      linkInputs().forEach(function (i) { i.value = links[i.dataset.link] || ''; });
+      bizInputs().forEach(function (i) { i.value = biz[i.dataset.bizField] || ''; });
+    };
+
+    var render = function () {
+      var c = cfg();
+      var links = {}, biz = {};
+      linkInputs().forEach(function (i) { links[i.dataset.link] = i.value.trim(); });
+      bizInputs().forEach(function (i) { biz[i.dataset.bizField] = i.value.trim(); });
+      var pad = function (k) { return '"' + k + '":' + ' '.repeat(Math.max(1, 12 - k.length)); };
+      out.value =
+        '/* Runtime configuration. THIS FILE IS PUBLIC.\n' +
+        '   Never put a Stripe secret key (sk_live_... / sk_test_...) in it. */\n' +
+        'window.SITE_CONFIG = {\n' +
+        '  admin: { passHash: "' + ((c.admin && c.admin.passHash) || '') + '" },\n\n' +
+        '  business: {\n' +
+        Object.keys(biz).map(function (k) {
+          return '    ' + pad(k) + '"' + biz[k].replace(/"/g, '\\"') + '"';
+        }).join(',\n') + '\n  },\n\n' +
+        '  checkoutEndpoint: "' + (c.checkoutEndpoint || '') + '",\n\n' +
+        '  paymentLinks: {\n' +
+        Object.keys(links).map(function (k) {
+          return '    "' + k + '": "' + links[k] + '"';
+        }).join(',\n') + '\n  }\n};\n';
+    };
+
+    gate.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var want = (cfg().admin || {}).passHash || '';
+      var msg = document.getElementById('gateMsg');
+      sha256(document.getElementById('pass').value).then(function (got) {
+        if (got === want) {
+          gate.hidden = true;
+          panel.hidden = false;
+          load();
+          render();
+        } else {
+          msg.textContent = 'That passphrase does not match.';
+        }
+      });
+    });
+
+    document.addEventListener('input', function (ev) {
+      if (ev.target.matches('[data-link],[data-biz-field]')) render();
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', function () {
+      out.select();
+      navigator.clipboard.writeText(out.value).then(function () {
+        document.getElementById('saveMsg').textContent =
+          'Copied. Open assets/js/site-config.js on GitHub, replace all of it, and commit.';
+      }, function () {
+        document.getElementById('saveMsg').textContent =
+          'Could not reach the clipboard — select the text below and copy it manually.';
+      });
+    });
+
+    document.getElementById('dlBtn').addEventListener('click', function () {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([out.value], { type: 'text/javascript' }));
+      a.download = 'site-config.js';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    document.getElementById('hashForm').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var v = document.getElementById('newpass').value;
+      if (!v) return;
+      sha256(v).then(function (h) {
+        document.getElementById('hashOut').textContent = h;
+      });
+    });
+  }
 
   document.querySelectorAll('[data-year]').forEach(function (n) {
     n.textContent = new Date().getFullYear();

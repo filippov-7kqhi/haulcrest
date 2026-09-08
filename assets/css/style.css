@@ -27,6 +27,7 @@ p{margin:0 0 1rem}
 .muted{color:var(--ink-2)}
 .center{text-align:center}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+[hidden]{display:none!important}   /* beats .form{display:grid} and friends */
 
 /* ---- buttons ---- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;padding:.95rem 1.7rem;border-radius:999px;
@@ -332,3 +333,15 @@ legend{padding:0 .5rem;font-weight:800;font-size:.86rem;letter-spacing:.08em;tex
 .result.show{margin-top:1.1rem}
 .result strong{color:var(--ink)}
 .result a{color:var(--brand);text-decoration:underline}
+.warnbox{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.45);border-radius:var(--radius);
+  padding:1.2rem 1.4rem;margin-top:1.2rem;font-size:.94rem;color:var(--ink-2);line-height:1.7}
+.warnbox strong{color:var(--ink)}
+.outbox{width:100%;margin-top:1rem;background:var(--bg-3);border:1px solid var(--line);border-radius:10px;
+  padding:1rem;color:var(--ink-2);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.82rem;line-height:1.6;resize:vertical}
+.btnrow{display:flex;gap:.7rem;flex-wrap:wrap}
+.adminlinks{color:var(--ink-2);font-size:.94rem;padding-left:1.1rem;line-height:1.8}
+.adminlinks strong{color:var(--ink)}
+.adminlinks a{color:var(--brand);text-decoration:underline}
+#panel h2{margin-top:2rem;font-size:1.5rem}
+#panel code{background:var(--bg-3);padding:.1rem .4rem;border-radius:4px;font-size:.88em}
