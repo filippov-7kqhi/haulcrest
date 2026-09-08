@@ -407,6 +407,21 @@
   // ---- business identity from config --------------------------------------
   (function () {
     var biz = cfg().business || {};
+
+    // Address on one line, skipping any part that has not been supplied.
+    var addr = document.querySelector('[data-biz-addr]');
+    if (addr) {
+      var supplied = ['street', 'city', 'postcode'].map(function (k) {
+        return (biz[k] || '').trim();
+      }).filter(Boolean);
+      if (supplied.length) {
+        addr.textContent = supplied.concat('United Kingdom').join(', ');
+        addr.hidden = false;
+      } else if (!addr.textContent.trim()) {
+        addr.hidden = true;
+      }
+    }
+
     document.querySelectorAll('[data-biz]').forEach(function (el) {
       var v = (biz[el.dataset.biz] || '').trim() || el.textContent.trim();
       if (!v) {

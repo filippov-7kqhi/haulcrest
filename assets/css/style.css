@@ -357,3 +357,6 @@ legend{padding:0 .5rem;font-weight:800;font-size:.86rem;letter-spacing:.08em;tex
 [data-biz][hidden]{display:none!important}
 .cartnotice{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.4);border-radius:10px;
   padding:.85rem 1rem;margin-bottom:1rem;font-size:.88rem;color:var(--ink-2)}
+
+.footer__grid [data-biz-addr]{display:block}
+.footer__grid [data-biz-addr][hidden]{display:none!important}
