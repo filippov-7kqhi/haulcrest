@@ -355,3 +355,5 @@ legend{padding:0 .5rem;font-weight:800;font-size:.86rem;letter-spacing:.08em;tex
 /* scoped to the address block: the copyright line uses [data-biz] inline */
 .footer__grid [data-biz],.footer__grid [data-biz-line]{display:block}
 [data-biz][hidden]{display:none!important}
+.cartnotice{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.4);border-radius:10px;
+  padding:.85rem 1rem;margin-bottom:1rem;font-size:.88rem;color:var(--ink-2)}

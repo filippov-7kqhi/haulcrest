@@ -67,18 +67,40 @@
     return '£' + n.toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
   }
 
+  function catalogue() { return window.CATALOGUE || {}; }
+
+  /** Raw basket: item codes and quantities only. */
   function read() {
-    try { return JSON.parse(localStorage.getItem(KEY)) || []; }
+    var raw;
+    try { raw = JSON.parse(localStorage.getItem(KEY)) || []; }
     catch (err) { return []; }
+    if (!Array.isArray(raw)) return [];
+    // Baskets saved by older versions kept a full snapshot. Keep the code and
+    // quantity, discard the rest — it is resolved live below.
+    return raw.filter(function (i) { return i && i.sku; })
+              .map(function (i) { return { sku: i.sku, qty: Math.max(1, Math.min(5, i.qty || 1)) }; });
+  }
+
+  /** Basket joined to the live catalogue. Anything withdrawn is dropped. */
+  function hydrate() {
+    var cat = catalogue(), kept = [], dropped = 0;
+    read().forEach(function (i) {
+      var p = cat[i.sku];
+      if (!p) { dropped++; return; }
+      kept.push({ sku: i.sku, qty: i.qty, name: p.name, price: p.price, img: p.img, url: p.url });
+    });
+    if (dropped) write(kept);            // prune withdrawn machines once
+    return { items: kept, dropped: dropped };
   }
 
   function write(items) {
-    try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (err) { /* private mode */ }
+    var lean = items.map(function (i) { return { sku: i.sku, qty: i.qty }; });
+    try { localStorage.setItem(KEY, JSON.stringify(lean)); } catch (err) { /* private mode */ }
     paintCount(items);
   }
 
   function paintCount(items) {
-    var n = (items || read()).reduce(function (t, i) { return t + i.qty; }, 0);
+    var n = (items || hydrate().items).reduce(function (t, i) { return t + i.qty; }, 0);
     document.querySelectorAll('[data-cart-count]').forEach(function (el) {
       el.textContent = n;
       el.hidden = n === 0 && el.classList.contains('cartbadge');
@@ -176,13 +198,11 @@
     if (found) {
       found.qty = Math.min(5, found.qty + qty);
     } else {
-      items.push({
-        sku: btn.dataset.add, name: btn.dataset.name, price: +btn.dataset.price,
-        img: btn.dataset.img, url: btn.dataset.url, qty: qty
-      });
+      items.push({ sku: btn.dataset.add, qty: qty });
     }
     write(items);
-    if (window.track) window.track('AddToCart', btn.dataset.name, btn.dataset.add);
+    var entry = catalogue()[btn.dataset.add];
+    if (window.track) window.track('AddToCart', entry ? entry.name : btn.dataset.add, btn.dataset.add);
     if (btn.hasAttribute('data-buynow')) {
       var direct = linkFor(btn.dataset.add);
       if (direct) {
@@ -204,14 +224,22 @@
   var list = document.getElementById('cartItems');
   if (list) {
     var render = function () {
-      var items = read();
+      var h = hydrate(), items = h.items;
+      var notice = document.getElementById('cartNotice');
+      if (notice) {
+        notice.hidden = !h.dropped;
+        notice.textContent = h.dropped === 1
+          ? 'One machine was removed from your basket because it is no longer sold.'
+          : h.dropped + ' machines were removed from your basket because they are no longer sold.';
+      }
       var empty = document.getElementById('cartEmpty');
       var summary = document.getElementById('cartSummary');
       empty.hidden = items.length > 0;
       summary.hidden = items.length === 0;
       list.innerHTML = items.map(function (i) {
         return '<div class="cartitem" data-sku="' + i.sku + '">' +
-          '<a href="' + i.url + '"><img src="' + i.img + '" width="1200" height="760" alt=""></a>' +
+          '<a href="' + i.url + '"><img src="' + i.img + '" width="1200" height="760" alt="" ' +
+          'onerror="this.style.visibility=\'hidden\'"></a>' +
           '<div><h3><a href="' + i.url + '">' + i.name + '</a></h3>' +
           '<p class="line">' + money(i.price) + ' each</p>' +
           '<label class="line">Qty <input type="number" min="1" max="5" value="' + i.qty +
@@ -225,11 +253,11 @@
     list.addEventListener('click', function (ev) {
       var rm = ev.target.closest('[data-remove]');
       if (!rm) return;
-      write(read().filter(function (i) { return i.sku !== rm.dataset.remove; }));
+      write(hydrate().items.filter(function (i) { return i.sku !== rm.dataset.remove; }));
       render();
     });
     var applyQty = function (f) {
-      var items = read();
+      var items = hydrate().items;
       items.forEach(function (i) {
         if (i.sku === f.dataset.qtyFor) i.qty = Math.max(1, Math.min(5, parseInt(f.value, 10) || 1));
       });
@@ -252,7 +280,7 @@
   // ---- checkout page -------------------------------------------------------
   var payReady = document.getElementById('payReady');
   if (payReady) {
-    var items = read();
+    var items = hydrate().items;
     if (!items.length) { window.location.replace('cart.html'); return; }
 
     document.getElementById('checkoutItems').innerHTML = items.map(function (i) {
