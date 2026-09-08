@@ -22,8 +22,11 @@ window.SITE_CONFIG = {
     phone:     ""
   },
 
-  // Optional serverless endpoint for baskets with more than one machine.
-  // See stripe/README.md. Leave "" while hosting on GitHub Pages.
+  // Data collector that feeds the admin dashboard. Without it the dashboard
+  // shows nothing rather than inventing figures. See stripe/README.md.
+  analyticsEndpoint: "",
+
+  // Optional: Checkout Sessions for baskets with more than one machine.
   checkoutEndpoint: "",
 
   // One Stripe Payment Link per machine. Blank = that machine routes to an

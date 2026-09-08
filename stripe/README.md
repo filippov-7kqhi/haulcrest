@@ -47,13 +47,41 @@ committed, roll it in the Dashboard immediately.
 | Two or more *different* machines | Checkout explains they must be paid for one at a time, or invoiced — see below |
 | A machine with no link pasted in | Checkout says payment is not switched on and routes to an enquiry, rather than pretending |
 
-## Step 3 (optional) — multi-machine baskets
+## Step 3 — the admin dashboard's data (optional, but needed for any figures)
+
+`/admin.html` shows live visitors, a conversion funnel, orders, customers and abandoned
+baskets. **None of that is possible on static hosting alone** — there is no server to
+count visitors or hold orders — so until a collector is connected the dashboard shows
+empty values and says so, rather than inventing numbers.
+
+`analytics-worker.js` in this folder is a Cloudflare Worker that does the job. It:
+
+- receives page views, product views and basket adds from the store (`POST /event`)
+- reads your real orders straight from the Stripe API (`GET /stats`)
+- optionally creates Checkout Sessions for multi-machine baskets (`POST /checkout`)
+
+```bash
+npm i -g wrangler
+wrangler kv namespace create EVENTS
+wrangler deploy
+wrangler secret put STRIPE_SECRET_KEY   # sk_live_... lives here, never in the repo
+wrangler secret put ADMIN_HASH          # the passHash from site-config.js
+```
+
+Then paste the Worker URL into **Settings -> Analytics endpoint** in the admin and commit
+the generated config. The free tier covers a store this size comfortably.
+
+What the store sends: a page path, an event name, an item code, and a random reference
+that lasts only for that browser session. No name, email, IP or device fingerprint, and
+nothing that can follow a visitor to another site. Counts expire after seven days.
+
+## Step 4 (optional) — multi-machine baskets
 
 Payment Links handle one machine per order. Most orders here are a single £2–3k machine,
 so this is rarely the binding constraint — but if you want a basket with several
 different machines to pay in one go, you need a server.
 
-`checkout-worker.js` in this folder is a Cloudflare Worker that creates a Stripe
+The same `analytics-worker.js` also exposes `POST /checkout`, which creates a Stripe
 Checkout Session. Deploy it, then set `checkoutEndpoint` in `stripe-config.js` to its URL
 and the checkout switches to that path automatically.
 

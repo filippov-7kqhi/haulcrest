@@ -123,6 +123,47 @@
     window.location.href = u;
   }
 
+
+  // ---- analytics beacon ----------------------------------------------------
+  // Sends only what the dashboard counts: a path, an event name and an item code.
+  // No cookies, no identifiers, no personal data — see the privacy policy.
+  (function () {
+    var ep = (cfg().analyticsEndpoint || '').trim().replace(/\/$/, '');
+    if (!ep) return;
+
+    var sid;
+    try {
+      sid = sessionStorage.getItem('sid');
+      if (!sid) {
+        sid = (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
+        sessionStorage.setItem('sid', sid);
+      }
+    } catch (e) { sid = 'anon'; }
+
+    window.track = function (type, label, sku) {
+      var body = JSON.stringify({
+        type: type, label: label || location.pathname, sku: sku || '', sid: sid
+      });
+      try {
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(ep + '/event', new Blob([body], { type: 'application/json' }));
+        } else {
+          fetch(ep + '/event', { method: 'POST', body: body, keepalive: true,
+                                 headers: { 'Content-Type': 'application/json' } });
+        }
+      } catch (e) { /* never let tracking break the page */ }
+    };
+
+    var page = document.body.getAttribute('data-page') || location.pathname;
+    window.track('PageView', page);
+
+    var prod = document.querySelector('[data-add]');
+    if (prod && document.getElementById('galMain')) {
+      window.track('ViewContent', prod.dataset.name, prod.dataset.add);
+    }
+    if (document.getElementById('checkoutItems')) window.track('InitiateCheckout', 'checkout');
+  })();
+
   // ---- add to basket -------------------------------------------------------
   document.addEventListener('click', function (ev) {
     var btn = ev.target.closest('[data-add]');
@@ -144,6 +185,7 @@
       });
     }
     write(items);
+    if (window.track) window.track('AddToCart', btn.dataset.name, btn.dataset.add);
     if (btn.hasAttribute('data-buynow')) {
       var direct = linkFor(btn.dataset.add);
       if (direct) {
