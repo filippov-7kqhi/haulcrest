@@ -411,9 +411,9 @@
     // Address on one line, skipping any part that has not been supplied.
     var addr = document.querySelector('[data-biz-addr]');
     if (addr) {
-      var supplied = ['street', 'city', 'postcode'].map(function (k) {
-        return (biz[k] || '').trim();
-      }).filter(Boolean);
+      // Town and postcode sit together without a comma, as UK addresses are written.
+      var town = [(biz.city || '').trim(), (biz.postcode || '').trim()].filter(Boolean).join(' ');
+      var supplied = [(biz.street || '').trim(), town].filter(Boolean);
       if (supplied.length) {
         addr.textContent = supplied.concat('United Kingdom').join(', ');
         addr.hidden = false;
