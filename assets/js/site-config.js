@@ -24,10 +24,10 @@ window.SITE_CONFIG = {
 
   // Data collector that feeds the admin dashboard. Without it the dashboard
   // shows nothing rather than inventing figures. See stripe/README.md.
-  analyticsEndpoint: "",
+  analyticsEndpoint: "https://branchforge-haulcrest-collector.stellapark1141.workers.dev",
 
   // Optional: Checkout Sessions for baskets with more than one machine.
-  checkoutEndpoint: "",
+  checkoutEndpoint: "https://branchforge-haulcrest-collector.stellapark1141.workers.dev",
 
   // One Stripe Payment Link per machine. Blank = that machine routes to an
   // enquiry instead of pretending to take payment.

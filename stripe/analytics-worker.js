@@ -30,8 +30,10 @@ const LIVE_WINDOW = 5 * 60e3;
 const KEEP = 7 * DAY;
 
 const PRICES = {
-  'BF-HC15H': 'price_xxx', 'BF-CREX10K': 'price_xxx', 'BF-MD500': 'price_xxx', 'BF-MSS739': 'price_xxx',
-  'HC-HC15H': 'price_xxx', 'HC-CREX10K': 'price_xxx', 'HC-MD500': 'price_xxx', 'HC-MSS739': 'price_xxx',
+  'BF-HC15H': 'price_1UEDpiGd7L8SA737QUfic9VX', 'BF-CREX10K': 'price_1UEDp1Gd7L8SA737jACOHxYD',
+  'BF-MD500': 'price_1UEDppGd7L8SA737E7MYI5uB', 'BF-MSS739': 'price_1UEDpsGd7L8SA7376NtY4Uvm',
+  'HC-HC15H': 'price_1UEDpwGd7L8SA73798SNXTHe', 'HC-CREX10K': 'price_1UEDpzGd7L8SA737545EpFhI',
+  'HC-MD500': 'price_1UEDq3Gd7L8SA737CPh5awNr', 'HC-MSS739': 'price_1UEDq6Gd7L8SA7371hDbxH5p',
 };
 
 export default {
