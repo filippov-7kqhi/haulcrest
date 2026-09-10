@@ -20,7 +20,7 @@
     <g:product_type>Business &amp; Industrial &gt; Heavy Machinery</g:product_type>
     <g:google_product_category>5605</g:google_product_category>
     <g:shipping><g:country>GB</g:country><g:service>Standard</g:service><g:price>0.00 GBP</g:price></g:shipping>
-    <g:shipping_weight> kg</g:shipping_weight>
+
   </item>
   <item>
     <g:id>HC-CREX10K</g:id>
@@ -38,7 +38,7 @@
     <g:product_type>Business &amp; Industrial &gt; Heavy Machinery</g:product_type>
     <g:google_product_category>5605</g:google_product_category>
     <g:shipping><g:country>GB</g:country><g:service>Standard</g:service><g:price>0.00 GBP</g:price></g:shipping>
-    <g:shipping_weight> kg</g:shipping_weight>
+
   </item>
   <item>
     <g:id>HC-MD500</g:id>
@@ -56,7 +56,7 @@
     <g:product_type>Business &amp; Industrial &gt; Heavy Machinery</g:product_type>
     <g:google_product_category>5605</g:google_product_category>
     <g:shipping><g:country>GB</g:country><g:service>Standard</g:service><g:price>0.00 GBP</g:price></g:shipping>
-    <g:shipping_weight> kg</g:shipping_weight>
+
   </item>
   <item>
     <g:id>HC-MSS739</g:id>
@@ -74,7 +74,7 @@
     <g:product_type>Business &amp; Industrial &gt; Heavy Machinery</g:product_type>
     <g:google_product_category>5605</g:google_product_category>
     <g:shipping><g:country>GB</g:country><g:service>Standard</g:service><g:price>0.00 GBP</g:price></g:shipping>
-    <g:shipping_weight> kg</g:shipping_weight>
+
   </item>
 </channel>
 </rss>
