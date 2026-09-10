@@ -30,8 +30,8 @@ const LIVE_WINDOW = 5 * 60e3;
 const KEEP = 7 * DAY;
 
 const PRICES = {
-  'BF-CY150': 'price_xxx', 'BF-GM380': 'price_xxx', 'BF-TT1000': 'price_xxx', 'BF-VG850': 'price_xxx',
-  'HC-CY150': 'price_xxx', 'HC-GM380': 'price_xxx', 'HC-TT1000': 'price_xxx', 'HC-VG850': 'price_xxx',
+  'BF-HC15H': 'price_xxx', 'BF-CREX10K': 'price_xxx', 'BF-MD500': 'price_xxx', 'BF-MSS739': 'price_xxx',
+  'HC-HC15H': 'price_xxx', 'HC-CREX10K': 'price_xxx', 'HC-MD500': 'price_xxx', 'HC-MSS739': 'price_xxx',
 };
 
 export default {

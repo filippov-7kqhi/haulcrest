@@ -32,9 +32,9 @@ window.SITE_CONFIG = {
   // One Stripe Payment Link per machine. Blank = that machine routes to an
   // enquiry instead of pretending to take payment.
   paymentLinks: {
-    "HC-HC15H": "",      // HC15H Towable Wood Chipper - GBP 2,899
-    "HC-CREX10K": "",    // CREX10-K Mini Excavator - GBP 3,449
-    "HC-MD500": "",      // MD-500HPRO Tracked Mini Dumper - GBP 2,699
-    "HC-MSS739": "",     // Mini Skid Steer Loader - GBP 3,299
+    "HC-HC15H": "https://buy.stripe.com/4gM7sLdoW7MycZ6gPO6c004",
+    "HC-CREX10K": "https://buy.stripe.com/5kQ3cvbgO9UG4sAczy6c005",
+    "HC-MD500": "https://buy.stripe.com/6oU7sL84C8QC2kseHG6c006",
+    "HC-MSS739": "https://buy.stripe.com/00w3cvdoWgj43ow8ji6c007"
   }
 };
