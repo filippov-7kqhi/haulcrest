@@ -18,8 +18,10 @@ sale, and it is safe to run repeatedly: products are created with fixed ids and
 reused, prices are reused when the amount still matches, and a machine that
 already has a link is left alone. Nothing is deleted, ever.
 
-Add --write to paste the resulting links straight into each store's
-site-config.js; without it the script only prints them.
+Run it from inside a store repo and it does that store; run it from anywhere
+else and it does all four. --dry-run shows what it would create and changes
+nothing. --write pastes the resulting links straight into site-config.js;
+without it the script only prints them.
 
 Requires nothing but Python 3. Do not commit your key, and do not paste it into
 a chat window -- roll it in the Dashboard if you ever do.
@@ -80,10 +82,26 @@ def flatten(d, prefix=""):
     return out
 
 
+def detect_store_repo():
+    """Run from inside a store repo, the CNAME beside this script names the store.
+       That is the normal case, so it becomes the default rather than something
+       you have to spell out."""
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    cname = os.path.join(root, "CNAME")
+    if os.path.exists(cname):
+        domain = open(cname, encoding="utf-8").read().strip()
+        for store, d in STORES.items():
+            if d == domain:
+                return store, root
+    return None, None
+
+
 # ------------------------------------------------------------------ catalogue --
-def catalogue(store, domain, local):
+def catalogue(store, domain, local, repo_root=None):
     """The machines actually on sale, read from the store's own catalogue."""
-    if local:
+    if repo_root:
+        src = open(f"{repo_root}/assets/js/catalogue.js", encoding="utf-8").read()
+    elif local:
         src = open(f"{local}/{store}/assets/js/catalogue.js", encoding="utf-8").read()
     else:
         with urllib.request.urlopen(f"https://{domain}/assets/js/catalogue.js", timeout=30) as r:
@@ -177,7 +195,9 @@ def main():
     ap.add_argument("--local", metavar="SITES_DIR",
                     help="read catalogues from a local sites/ directory instead of the live sites")
     ap.add_argument("--write", action="store_true",
-                    help="paste the links into each store's site-config.js (needs --local)")
+                    help="paste the links into the store's site-config.js")
+    ap.add_argument("--dry-run", action="store_true",
+                    help="show what would be created and change nothing")
     ap.add_argument("--vat-inclusive", action="store_true",
                     help="mark prices VAT-inclusive. Only if the company is VAT registered.")
     args = ap.parse_args()
@@ -190,8 +210,13 @@ def main():
         print("! That is an unrestricted secret key. It works, but a restricted key with\n"
               "  write on Products, Prices and Payment links is the safer thing to use here.\n",
               file=sys.stderr)
-    if args.write and not args.local:
-        raise SystemExit("--write needs --local to know which site-config.js files to edit")
+    repo_store, repo_root = detect_store_repo()
+    if repo_root:
+        print(f"Running inside the {repo_store} repo ({repo_root}).")
+        if not args.store and not args.local:
+            args.store = [repo_store]
+    if args.write and not (args.local or repo_root):
+        raise SystemExit("--write needs --local, or to be run from inside a store repo")
 
     acct = call(key, "GET", "/account")
     print(f"Stripe account: {acct.get('settings', {}).get('dashboard', {}).get('display_name') or acct['id']}"
@@ -200,21 +225,33 @@ def main():
     known = existing_links_by_sku(key)
     for store in (args.store or sorted(STORES)):
         domain = STORES[store]
-        items = catalogue(store, domain, args.local)
+        root = repo_root if store == repo_store else None
+        items = catalogue(store, domain, args.local, root)
         print(f"{store} ({domain})")
         links = {}
         for sku, item in items.items():
+            if args.dry_run:
+                have = sku in known
+                print(f"  {'would keep  ' if have else 'would create'}  {sku:12} "
+                      f"£{item['price']:>6,}  {item['name']}")
+                continue
             product = product_for(key, sku, item, domain)
             price = price_for(key, product, item["price"] * 100, args.vat_inclusive)
             url, made = link_for(key, sku, price, domain, known)
             links[sku] = known[sku] = url
             print(f"  {'created' if made else 'reused '}  {sku:12} £{item['price']:>6,}  {url}")
-        if args.write:
-            write_config(f"{args.local}/{store}/assets/js/site-config.js", links)
-            print(f"  written to {store}/assets/js/site-config.js")
+        if args.write and not args.dry_run:
+            path = (f"{root}/assets/js/site-config.js" if root
+                    else f"{args.local}/{store}/assets/js/site-config.js")
+            write_config(path, links)
+            print(f"  written to {path}")
         print()
 
-    print("Done. Commit the site-config.js changes, or paste the URLs in through /admin.html.")
+    if args.dry_run:
+        print("Dry run: nothing was created. Drop --dry-run to do it for real.")
+    else:
+        print("Done. Commit the site-config.js changes, or paste the URLs in "
+              "through /admin.html.")
 
 
 if __name__ == "__main__":

@@ -34,9 +34,12 @@ per machine:
   and nothing else on a static site ever gets the chance to ask about gate width or
   gradient
 
-Then it prints one block per store, ready to paste. Add `--local ../sites --write` to
-have it edit each `site-config.js` for you instead. Only the `paymentLinks` block is
-touched; the admin hash and every other setting survive.
+Run it from inside a store repo and it does that store; run it from anywhere else and it
+does all four. It prints one block per store, ready to paste — add `--write` and it edits
+`site-config.js` for you instead. Only the `paymentLinks` block is touched; the admin
+hash and every other setting survive.
+
+`--dry-run` lists what it would create and changes nothing. Worth doing first.
 
 Running it again is safe: products are created at fixed ids and reused, a price is
 reused while the amount still matches, and a machine that already has a link is left
