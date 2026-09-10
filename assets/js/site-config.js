@@ -27,7 +27,7 @@ window.SITE_CONFIG = {
   analyticsEndpoint: "https://branchforge-haulcrest-collector.stellapark1141.workers.dev",
 
   // Optional: Checkout Sessions for baskets with more than one machine.
-  checkoutEndpoint: "https://branchforge-haulcrest-collector.stellapark1141.workers.dev",
+  checkoutEndpoint: "https://branchforge-haulcrest-collector.stellapark1141.workers.dev/checkout",
 
   // One Stripe Payment Link per machine. Blank = that machine routes to an
   // enquiry instead of pretending to take payment.

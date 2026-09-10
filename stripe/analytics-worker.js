@@ -43,6 +43,7 @@ export default {
       'Access-Control-Allow-Origin': ALLOWED.includes(origin) ? origin : ALLOWED[0],
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, X-Admin',
+      'Access-Control-Allow-Credentials': 'true',
     };
     if (request.method === 'OPTIONS') return new Response(null, { headers: cors });
 
