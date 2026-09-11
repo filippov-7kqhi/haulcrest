@@ -156,6 +156,9 @@ section{padding:4rem 0}
 .spectable th,.spectable td{text-align:left;padding:.85rem 1rem;border-bottom:1px solid var(--line)}
 .spectable th{color:var(--ink-2);font-weight:600;width:44%}
 .spectable tr:nth-child(odd){background:var(--bg-2)}
+.specgrid2{display:grid;grid-template-columns:1fr 1fr;gap:0 1.6rem;align-items:start}
+.specgrid2 .spectable tr:nth-child(odd){background:var(--bg-2)}
+@media(max-width:700px){.specgrid2{grid-template-columns:1fr}}
 /* ---- accordion ---- */
 .acc{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--bg-2)}
 .acc details{border-bottom:1px solid var(--line)}
