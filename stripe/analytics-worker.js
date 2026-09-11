@@ -194,18 +194,19 @@ async function checkout(request, env, cors, origin) {
     form.set(`line_items[${i}][quantity]`, String(Math.max(1, Math.min(5, parseInt(it.qty, 10) || 1))));
   });
 
+  const key = (env.STRIPE_SECRET_KEY || '').trim();
   const res = await fetch('https://api.stripe.com/v1/checkout/sessions', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${env.STRIPE_SECRET_KEY}`,
+      Authorization: `Bearer ${key}`,
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: form,
+    body: form.toString(),
   });
   const text = await res.text();
   let s;
   try { s = JSON.parse(text); }
-  catch { return json({ error: `Stripe returned status ${res.status}: ${text.slice(0, 300)}` }, 502, cors); }
+  catch { return json({ error: `Stripe returned status ${res.status} (key length ${key.length}): ${text.slice(0, 300)}` }, 502, cors); }
   if (!res.ok) return json({ error: s.error?.message || 'stripe error' }, 502, cors);
   return json({ url: s.url }, 200, cors);
 }
