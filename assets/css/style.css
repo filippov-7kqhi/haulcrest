@@ -111,7 +111,8 @@ section{padding:4rem 0}
 .card ul li{margin-bottom:.25rem}
 
 /* ---- feature tiles ---- */
-.tile{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--radius);padding:1.5rem}
+.tile{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--radius);padding:1.5rem;overflow:hidden}
+.tile__img{display:block;width:calc(100% + 3rem);aspect-ratio:1200/760;object-fit:cover;margin:-1.5rem -1.5rem .9rem;background:var(--bg-3)}
 .tile__ico{width:46px;height:46px;border-radius:12px;background:rgba(245,158,11,.13);display:grid;place-items:center;margin-bottom:.9rem;color:var(--brand)}
 .tile h3{font-size:1.15rem;margin-bottom:.35rem}
 .tile p{margin:0;color:var(--ink-2);font-size:.94rem}
