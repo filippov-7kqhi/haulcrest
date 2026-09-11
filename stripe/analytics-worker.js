@@ -30,7 +30,7 @@ const LIVE_WINDOW = 5 * 60e3;
 const KEEP = 7 * DAY;
 
 const PRICES = {
-  'BF-HC15H': 'price_1UEDpiGd7L8SA737QUfic9VX', 'BF-CREX10K': 'price_1UEDp1Gd7L8SA737jACOHxYD',
+  'BF-HC15H': 'price_1UEDpiGd7L8SA737QUfic9VX', 'BF-CREX10K': 'price_1UEDplGd7L8SA737jAZOHxYD',
   'BF-MD500': 'price_1UEDppGd7L8SA737E7MYI5uB', 'BF-MSS739': 'price_1UEDpsGd7L8SA7376NtY4Uvm',
   'HC-HC15H': 'price_1UEDpwGd7L8SA73798SNXTHe', 'HC-CREX10K': 'price_1UEDpzGd7L8SA737545EpFhI',
   'HC-MD500': 'price_1UEDq3Gd7L8SA737CPh5awNr', 'HC-MSS739': 'price_1UEDq6Gd7L8SA7371hDbxH5p',
@@ -202,7 +202,10 @@ async function checkout(request, env, cors, origin) {
     },
     body: form,
   });
-  const s = await res.json();
+  const text = await res.text();
+  let s;
+  try { s = JSON.parse(text); }
+  catch { return json({ error: `Stripe returned status ${res.status}: ${text.slice(0, 300)}` }, 502, cors); }
   if (!res.ok) return json({ error: s.error?.message || 'stripe error' }, 502, cors);
   return json({ url: s.url }, 200, cors);
 }
