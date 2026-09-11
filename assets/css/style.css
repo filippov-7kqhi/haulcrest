@@ -157,6 +157,13 @@ section{padding:4rem 0}
 .spectable th{color:var(--ink-2);font-weight:600;width:44%}
 .spectable tr:nth-child(odd){background:var(--bg-2)}
 
+/* ---- attachment cards ---- */
+.attachgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.9rem}
+.attach{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.6rem;transition:.2s ease}
+.attach:hover{border-color:var(--brand);transform:translateY(-3px)}
+.attach__name{font-weight:700;font-size:.96rem}
+.attach__price{color:var(--brand);font-family:var(--head);font-size:1.35rem;font-weight:700}
+
 /* ---- accordion ---- */
 .acc{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--bg-2)}
 .acc details{border-bottom:1px solid var(--line)}
