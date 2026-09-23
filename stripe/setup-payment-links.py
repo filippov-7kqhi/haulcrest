@@ -19,7 +19,7 @@ reused, prices are reused when the amount still matches, and a machine that
 already has a link is left alone. Nothing is deleted, ever.
 
 Run it from inside a store repo and it does that store; run it from anywhere
-else and it does all four. --dry-run shows what it would create and changes
+else and it does this store. --dry-run shows what it would create and changes
 nothing. --write pastes the resulting links straight into site-config.js;
 without it the script only prints them.
 
@@ -31,10 +31,7 @@ import argparse, json, os, re, sys, urllib.error, urllib.parse, urllib.request
 API = "https://api.stripe.com/v1"
 
 STORES = {
-    "branchforge": "branchforge.shop",
-    "haulcrest":   "haulcrest.shop",
-    "rootvexx":    "rootvexx.shop",
-    "lawnstride":  "lawnstride.shop",
+    "haulcrest": "haulcrest.shop",
 }
 
 
@@ -191,7 +188,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--store", action="append", choices=sorted(STORES),
-                    help="limit to one store; repeatable. Default: all four.")
+                    help="limit to one store; repeatable. Default: every store listed.")
     ap.add_argument("--local", metavar="SITES_DIR",
                     help="read catalogues from a local sites/ directory instead of the live sites")
     ap.add_argument("--write", action="store_true",
